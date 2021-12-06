@@ -21,7 +21,7 @@ jobs:
 
     - uses: actions/upload-artifact@v2
       with:
-        name: tadqeek_alsharekh_org.exe
+        name: tadqeek_sakhr.exe
         path: dist/windows
         
     - name: Package Application for Linux
@@ -31,7 +31,7 @@ jobs:
 
     - uses: actions/upload-artifact@v2
       with:
-        name: tadqeek_alsharekh_org
+        name: tadqeek_sakhr
         path: dist/linux
 
     - name: Get Short SHA
@@ -42,8 +42,9 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         tag: ${{ steps.sha_short.outputs.sha_short }}
+        name: ${{ steps.sha_short.outputs.sha_short }}
         allow_override: true
         files: >
-          dist/windows/tadqeek_alsharekh_org.exe
-          dist/linux/tadqeek_alsharekh_org
+          dist/windows/tadqeek_sakhr.exe
+          dist/linux/tadqeek_sakhr
 

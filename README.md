@@ -1,10 +1,10 @@
-# tadqeek_sakr
-A mini command line tool to spellcheck text files using tadqeek.alsharekh.org
+# tadqeek_sakhr
+A mini command line tool to spellcheck text files using [tadqeek.alsharekh.org](https://tadqeek.alsharekh.org)
 
 # Usage
 
 ```bash
-usage: tadqeek_alsharekh_org.py [-h] -i INPUT [-o OUTPUT]
+usage: tadqeek_sakhr.py [-h] -i INPUT [-o OUTPUT]
 
 optional arguments:
   -h, --help            show this help message and exit

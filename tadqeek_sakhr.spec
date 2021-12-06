@@ -4,7 +4,7 @@
 block_cipher = None
 
 
-a = Analysis(['tadqeek_alsharekh_org.py'],
+a = Analysis(['tadqeek_sakhr.py'],
              pathex=[],
              binaries=[],
              datas=[],
@@ -25,7 +25,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,  
           [],
-          name='tadqeek_alsharekh_org',
+          name='tadqeek_sakhr',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "tadqeek_sakr"
+name = "tadqeek_sakhr"
 version = "0.1.0"
 description = "A mini command line tool to spellcheck text files using tadqeek.alsharekh.org"
 authors = ["yshalsager <ysh-alsager@hotmail.com>"]
