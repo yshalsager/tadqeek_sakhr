@@ -34,15 +34,15 @@ jobs:
         name: tadqeek_sakhr
         path: dist/linux
 
-    - name: Get Short SHA
-      id: sha_short
-      run: echo ::set-output name=sha_short::$(git rev-parse --short=7 ${{ github.sha }})
+    - name: Get datetime
+      id: datetime
+      run: echo ::set-output name=datetime::$(date +'%Y%m%d-%H%M%S')
 
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ steps.sha_short.outputs.sha_short }}
-        name: ${{ steps.sha_short.outputs.sha_short }}
+        tag_name: ${{ steps.datetime.outputs.datetime }}
+        name: ${{ steps.datetime.outputs.datetime }}
         files: |
           dist/windows/tadqeek_sakhr.exe
           dist/linux/tadqeek_sakhr
