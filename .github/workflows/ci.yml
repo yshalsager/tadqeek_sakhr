@@ -21,8 +21,8 @@ jobs:
 
     - uses: actions/upload-artifact@v2
       with:
-        name: tadqeek_alsharekh_org
-        path: src/dist/windows
+        name: tadqeek_alsharekh_org.exe
+        path: dist/windows
         
     - name: Package Application for Linux
       uses: JackMcKew/pyinstaller-action-linux@main
@@ -32,4 +32,4 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: tadqeek_alsharekh_org
-        path: src/dist/linux
+        path: dist/linux
