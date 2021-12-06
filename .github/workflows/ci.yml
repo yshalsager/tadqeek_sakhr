@@ -33,3 +33,17 @@ jobs:
       with:
         name: tadqeek_alsharekh_org
         path: dist/linux
+
+    - name: Get Short SHA
+      id: sha_short
+      run: echo ::set-output name=sha_short::$(git rev-parse --short=7 ${{ github.sha }})
+
+    - uses: meeDamian/github-release@2.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ steps.sha_short.outputs.sha_short }}
+        allow_override: true
+        files: >
+          dist/windows/tadqeek_alsharekh_org.exe
+          dist/linux/tadqeek_alsharekh_org
+
