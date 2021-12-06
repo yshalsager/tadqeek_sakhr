@@ -38,13 +38,12 @@ jobs:
       id: sha_short
       run: echo ::set-output name=sha_short::$(git rev-parse --short=7 ${{ github.sha }})
 
-    - uses: meeDamian/github-release@2.0
+    - name: Release
+      uses: softprops/action-gh-release@v1
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: ${{ steps.sha_short.outputs.sha_short }}
+        tag_name: ${{ steps.sha_short.outputs.sha_short }}
         name: ${{ steps.sha_short.outputs.sha_short }}
-        allow_override: true
-        files: >
+        files: |
           dist/windows/tadqeek_sakhr.exe
           dist/linux/tadqeek_sakhr
 
