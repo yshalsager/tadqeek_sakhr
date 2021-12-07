@@ -1,10 +1,10 @@
 # tadqeek.alsharekh.org
+import asyncio
+import encodings.idna
 from argparse import ArgumentParser
 from pathlib import Path
-import asyncio
-from aiohttp import ClientSession
 
-import encodings.idna
+import aiohttp
 
 headers = {
     "authority": "cwg.alsharekh.org",
@@ -18,14 +18,28 @@ headers = {
 
 url = "https://cwg.alsharekh.org/Diac/MarkWrongWords"
 
+semaphore = asyncio.BoundedSemaphore(3)
+
 
 async def fetch(url, data, headers):
-    async with ClientSession() as session:
+    async with aiohttp.ClientSession() as session:
         async with session.post(
             url, data=data.encode("utf-8"), headers=headers
         ) as response:
-            response_json = await response.json()
-            return response_json["diacWord"]
+            try:
+                response_json = await response.json()
+                return response_json["diacWord"]
+            except aiohttp.client_exceptions.ContentTypeError:
+                response_text = await response.text()
+                raise RuntimeError(
+                    f"Unable to process, got response:\n{response_text}."
+                )
+
+
+async def bound_fetch(sem, url, data, headers):
+    # Getter function with semaphore.
+    async with sem:
+        return await fetch(url, data, headers)
 
 
 # def chunkify_text(text, chunk_size=4900):
@@ -57,13 +71,12 @@ async def main(input_file: Path, output_file: Path):
     print("Starting spellcheck...")
     tasks = [
         asyncio.ensure_future(
-            fetch(url, '{"word": "' + chunk + '", "type": 0}', headers)
+            bound_fetch(semaphore, url, '{"word": "' + chunk + '", "type": 0}', headers)
         )
         for chunk in chunks
     ]
     results = await asyncio.gather(*tasks)
     for result in results:
-        
         if result:
             output_file_text += result
     output_file.write_text(output_file_text)
@@ -84,4 +97,6 @@ if __name__ == "__main__":
     output_file = (
         args.output if args.output else Path(f"{args.input.stem}_{args.input.suffix}")
     )
-    asyncio.run(main(args.input, output_file))
+    loop = asyncio.get_event_loop()
+    future = asyncio.ensure_future(main(args.input, output_file))
+    loop.run_until_complete(future)
