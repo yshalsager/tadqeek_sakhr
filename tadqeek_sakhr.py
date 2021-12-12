@@ -66,7 +66,7 @@ def chunkify_text(text, chunk_size=4950):
 async def main(input_file: Path, output_file: Path):
     output_file_text = ""
     print("Splitting text into chunks...")
-    chunks = chunkify_text(input_file.read_text())
+    chunks = chunkify_text(input_file.read_text(encoding="utf-8"))
     print(f"{len(chunks)} chunks found.")
     print("Starting spellcheck...")
     tasks = [

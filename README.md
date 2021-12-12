@@ -37,5 +37,5 @@ optional arguments:
 - قم بتشغيل الملف التنفيذي عبر سطر/موجه اﻷوامر مع استبدال كلمة filename باسم الملف المراد تدقيقه.
 
 ```powershell
-tadqeek_sakhr.exe -i filename
+./tadqeek_sakhr.exe -i filename
 ```
