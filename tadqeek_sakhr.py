@@ -28,6 +28,7 @@ async def fetch(url, data, headers):
         ) as response:
             try:
                 response_json = await response.json()
+                print(response_json)
                 return response_json["diacWord"]
             except aiohttp.client_exceptions.ContentTypeError:
                 response_text = await response.text()
@@ -66,7 +67,7 @@ def chunkify_text(text, chunk_size=4950):
 async def main(input_file: Path, output_file: Path):
     output_file_text = ""
     print("Splitting text into chunks...")
-    chunks = chunkify_text(input_file.read_text())
+    chunks = chunkify_text(input_file.read_text(encoding="utf-8"))
     print(f"{len(chunks)} chunks found.")
     print("Starting spellcheck...")
     tasks = [
@@ -79,7 +80,7 @@ async def main(input_file: Path, output_file: Path):
     for result in results:
         if result:
             output_file_text += result
-    output_file.write_text(output_file_text)
+    output_file.write_text(output_file_text, encoding="utf-8")
     print("Done!")
 
 
