@@ -21,14 +21,15 @@ url = "https://cwg.alsharekh.org/Diac/MarkWrongWords"
 semaphore = asyncio.BoundedSemaphore(3)
 
 
-async def fetch(url, data, headers):
+async def fetch(url, data, headers, verbose=False):
     async with aiohttp.ClientSession() as session:
         async with session.post(
             url, data=data.encode("utf-8"), headers=headers
         ) as response:
             try:
                 response_json = await response.json()
-                print(response_json)
+                if verbose:
+                    print(response_json)
                 return response_json["diacWord"]
             except aiohttp.client_exceptions.ContentTypeError:
                 response_text = await response.text()
@@ -37,10 +38,10 @@ async def fetch(url, data, headers):
                 )
 
 
-async def bound_fetch(sem, url, data, headers):
+async def bound_fetch(sem, url, data, headers, verbose=False):
     # Getter function with semaphore.
     async with sem:
-        return await fetch(url, data, headers)
+        return await fetch(url, data, headers, verbose=verbose)
 
 
 # def chunkify_text(text, chunk_size=4900):
@@ -64,7 +65,7 @@ def chunkify_text(text, chunk_size=4950):
     return chunks
 
 
-async def main(input_file: Path, output_file: Path):
+async def main(input_file: Path, output_file: Path, verbose=False):
     output_file_text = ""
     print("Splitting text into chunks...")
     chunks = chunkify_text(input_file.read_text(encoding="utf-8"))
@@ -72,7 +73,13 @@ async def main(input_file: Path, output_file: Path):
     print("Starting spellcheck...")
     tasks = [
         asyncio.ensure_future(
-            bound_fetch(semaphore, url, '{"word": "' + chunk + '", "type": 0}', headers)
+            bound_fetch(
+                semaphore,
+                url,
+                '{"word": "' + chunk + '", "type": 0}',
+                headers,
+                verbose=verbose,
+            )
         )
         for chunk in chunks
     ]
@@ -94,10 +101,11 @@ if __name__ == "__main__":
         type=Path,
     )
     parser.add_argument("-o", "--output", help="Path of output file.", type=Path)
+    parser.add_argument("-v", "--verbose", action='store_true', help="Print API responses.")
     args = parser.parse_args()
     output_file = (
         args.output if args.output else Path(f"{args.input.stem}_{args.input.suffix}")
     )
     loop = asyncio.get_event_loop()
-    future = asyncio.ensure_future(main(args.input, output_file))
+    future = asyncio.ensure_future(main(args.input, output_file, verbose=args.verbose))
     loop.run_until_complete(future)
