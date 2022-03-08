@@ -2,48 +2,49 @@ name: Package Application with Pyinstaller
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, 'chore(deps-dev)') }}
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Package Application for Windows
-      uses: JackMcKew/pyinstaller-action-windows@main
-      with:
-        path: .
+      - name: Package Application for Windows
+        uses: yshalsager/pyinstaller-action-windows@main
+        with:
+          path: .
+          spec: tadqeek_sakhr.spec
 
-    - uses: actions/upload-artifact@v2
-      with:
-        name: tadqeek_sakhr.exe
-        path: dist/windows
-        
-    - name: Package Application for Linux
-      uses: JackMcKew/pyinstaller-action-linux@main
-      with:
-        path: .
+      - uses: actions/upload-artifact@v2
+        with:
+          name: tadqeek_sakhr.exe
+          path: dist/windows
 
-    - uses: actions/upload-artifact@v2
-      with:
-        name: tadqeek_sakhr
-        path: dist/linux
+      - name: Package Application for Linux
+        uses: yshalsager/pyinstaller-action-linux@main
+        with:
+          path: .
+          spec: tadqeek_sakhr.spec
 
-    - name: Get datetime
-      id: datetime
-      run: echo ::set-output name=datetime::$(date +'%Y%m%d-%H%M%S')
+      - uses: actions/upload-artifact@v2
+        with:
+          name: tadqeek_sakhr
+          path: dist/linux
 
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: ${{ steps.datetime.outputs.datetime }}
-        name: ${{ steps.datetime.outputs.datetime }}
-        files: |
-          dist/windows/tadqeek_sakhr.exe
-          dist/linux/tadqeek_sakhr
+      - name: Get datetime
+        id: datetime
+        run: echo ::set-output name=datetime::$(date +'%Y%m%d-%H%M%S')
 
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.datetime.outputs.datetime }}
+          name: ${{ steps.datetime.outputs.datetime }}
+          files: |
+            dist/windows/tadqeek_sakhr.exe
+            dist/linux/tadqeek_sakhr

@@ -1,10 +1,9 @@
 # tadqeek.alsharekh.org
 import asyncio
-import encodings.idna
 from argparse import ArgumentParser
 from pathlib import Path
 
-import aiohttp
+from httpx import AsyncClient, HTTPError
 
 headers = {
     "authority": "cwg.alsharekh.org",
@@ -18,24 +17,21 @@ headers = {
 
 url = "https://cwg.alsharekh.org/Diac/MarkWrongWords"
 
-semaphore = asyncio.BoundedSemaphore(3)
+semaphore = asyncio.BoundedSemaphore(5)
 
 
 async def fetch(url, data, headers, verbose=False):
-    async with aiohttp.ClientSession() as session:
-        async with session.post(
-            url, data=data.encode("utf-8"), headers=headers
-        ) as response:
-            try:
-                response_json = await response.json()
-                if verbose:
-                    print(response_json)
-                return response_json["diacWord"]
-            except aiohttp.client_exceptions.ContentTypeError:
-                response_text = await response.text()
-                raise RuntimeError(
-                    f"Unable to process, got response:\n{response_text}."
-                )
+    async with AsyncClient() as client:
+        response = await client.post(url, data=data, headers=headers, timeout=300)
+        try:
+            response_json = response.json()
+            if verbose:
+                print(response_json["totalError"])
+            return response_json["diacWord"]
+        except HTTPError as err:
+            raise RuntimeError(
+                f"{err}\nUnable to process, got response:\n{response.text}\n."
+            )
 
 
 async def bound_fetch(sem, url, data, headers, verbose=False):
@@ -101,7 +97,9 @@ if __name__ == "__main__":
         type=Path,
     )
     parser.add_argument("-o", "--output", help="Path of output file.", type=Path)
-    parser.add_argument("-v", "--verbose", action='store_true', help="Print API responses.")
+    parser.add_argument(
+        "-v", "--verbose", action="store_true", help="Print API responses."
+    )
     args = parser.parse_args()
     output_file = (
         args.output if args.output else Path(f"{args.input.stem}_{args.input.suffix}")
