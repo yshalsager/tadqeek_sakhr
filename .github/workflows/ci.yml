@@ -21,6 +21,7 @@ jobs:
           spec: tadqeek_sakhr.spec
 
       - uses: actions/upload-artifact@v2
+        if: github.actor != 'dependabot[bot]'
         with:
           name: tadqeek_sakhr.exe
           path: dist/windows
@@ -32,6 +33,7 @@ jobs:
           spec: tadqeek_sakhr.spec
 
       - uses: actions/upload-artifact@v2
+        if: github.actor != 'dependabot[bot]'
         with:
           name: tadqeek_sakhr
           path: dist/linux
@@ -41,6 +43,7 @@ jobs:
         run: echo ::set-output name=datetime::$(date +'%Y%m%d-%H%M%S')
 
       - name: Release
+        if: github.actor != 'dependabot[bot]'
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.datetime.outputs.datetime }}
