@@ -4,7 +4,7 @@
 block_cipher = None
 
 
-a = Analysis(['tadqeek_sakhr.py'],
+a = Analysis(['../tadqeek_sakhr.py'],
              pathex=[],
              binaries=[],
              datas=[],

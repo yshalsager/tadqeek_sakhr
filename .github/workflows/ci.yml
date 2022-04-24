@@ -18,7 +18,8 @@ jobs:
         uses: yshalsager/pyinstaller-action-windows@main
         with:
           path: .
-          spec: tadqeek_sakhr.spec
+          spec: pyinstaller/tadqeek_sakhr.spec
+          requirements: pyinstaller/requirements.txt
 
       - uses: actions/upload-artifact@v2
         if: github.actor != 'dependabot[bot]'
@@ -30,7 +31,8 @@ jobs:
         uses: yshalsager/pyinstaller-action-linux@main
         with:
           path: .
-          spec: tadqeek_sakhr.spec
+          spec: pyinstaller/tadqeek_sakhr.spec
+          requirements: pyinstaller/requirements.txt
 
       - uses: actions/upload-artifact@v2
         if: github.actor != 'dependabot[bot]'
