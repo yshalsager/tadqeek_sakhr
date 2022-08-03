@@ -1,21 +1,22 @@
 # tadqeek.alsharekh.org
 import asyncio
 from argparse import ArgumentParser
+import json
 from pathlib import Path
 
 from httpx import AsyncClient, HTTPError
 
 headers = {
-    "authority": "cwg.alsharekh.org",
+    "authority": "cwg.sahehly.com",
     "accept": "application/json, text/plain, */*",
+    "authorization": "Basic V2ViU2FoZWhseTo4dVc1c2FkN2dGRzJC",
     "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36",
     "content-type": "application/json",
-    "origin": "https://tadqeek.alsharekh.org",
-    "referer": "https://tadqeek.alsharekh.org/",
-    "accept-language": "en-US,en;q=0.9,ar-EG;q=0.8,ar;q=0.7",
+    "origin": "https://sahehly.com",
+    "referer": "https://sahehly.com/",
 }
 
-url = "https://cwg.alsharekh.org/Diac/MarkWrongWords"
+url = "https://cwg.sahehly.com/Diac/Sahehly"
 
 semaphore = asyncio.BoundedSemaphore(5)
 
@@ -72,7 +73,7 @@ async def main(input_file: Path, output_file: Path, verbose=False):
             bound_fetch(
                 semaphore,
                 url,
-                '{"word": "' + chunk + '", "type": 0}',
+                json.dumps({"type": "SWeb", "word": chunk, "gFlag": True}),
                 headers,
                 verbose=verbose,
             )
