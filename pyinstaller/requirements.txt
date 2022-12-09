@@ -1,5 +1,5 @@
 anyio==3.6.2; python_full_version >= "3.6.2" and python_version >= "3.6"
-certifi==2022.9.24; python_version >= "3.6"
+certifi==2022.12.7; python_version >= "3.6"
 charset-normalizer==3.0.0; python_full_version >= "3.5.0" and python_version >= "3.6"
 h11==0.14.0; python_version >= "3.6"
 h2==4.1.0; python_version >= "3.6" and python_full_version >= "3.6.1"
