@@ -9,7 +9,7 @@ httpx = {extras = ["http2"], version = "^0.23.3"}
 python = "^3.10"
 
 [tool.poetry.dev-dependencies]
-black = "^22.10"
+black = "^23.1"
 
 [build-system]
 build-backend = "poetry.core.masonry.api"
