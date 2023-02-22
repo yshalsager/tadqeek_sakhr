@@ -1,5 +1,5 @@
 # tadqeek_sakhr
-A mini command line tool to spellcheck text files using [tadqeek.alsharekh.org](https://tadqeek.alsharekh.org)
+A mini command line tool to spellcheck text files using <https://sahehly.com/>
 
 [![GitHub release](https://img.shields.io/github/release/yshalsager/tadqeek_sakhr.svg)](https://github.com/yshalsager/tadqeek_sakhr/releases/)
 
@@ -10,6 +10,13 @@ A mini command line tool to spellcheck text files using [tadqeek.alsharekh.org](
 [![Patreon](https://img.shields.io/badge/Patreon-Support-F96854?style=flat&labelColor=F96854&logo=Patreon&logoColor=white&link=https://www.patreon.com/XiaomiFirmwareUpdater)](https://www.patreon.com/XiaomiFirmwareUpdater)
 [![Liberapay](https://img.shields.io/badge/Liberapay-Support-F6C915?style=flat&labelColor=F6C915&logo=Liberapay&logoColor=white&link=https://liberapay.com/yshalsager)](https://liberapay.com/yshalsager)
 
+<h2 id="disclaimer" align="center">
+⚠️ DISCLAIMER ⚠️
+</h2>
+
+<p align="center">
+<b>This project was made only for educational purposes!</b>
+<br>
 
 ## Usage
 
